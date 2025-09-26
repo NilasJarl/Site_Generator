@@ -1,4 +1,4 @@
-import os, shutil
+import sys
 from generate_page import static_to_public, generate_page_recursive
 
 
@@ -7,9 +7,13 @@ from generate_page import static_to_public, generate_page_recursive
 
 
 
-def main():
-    static_to_public("static", "public")
-    generate_page_recursive("content", "template.html", "public")
+def main(basepath):
+    static_to_public("static", "docs")
+    generate_page_recursive(basepath,"content", "template.html", "docs")
 
 if __name__ == "__main__":
-    main()
+    basepath = "/"
+    if sys.argv:
+        basepath = sys.argv
+    
+    main(basepath)

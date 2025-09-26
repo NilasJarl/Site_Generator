@@ -24,7 +24,7 @@ def _copy_recursive(path_source, path_destination):
 
 
 
-def generate_page(from_path, template_path, dest_path):
+def generate_page(basepath ,from_path, template_path, dest_path):
     print(f"Generating page from {from_path} to {dest_path} using {template_path}")
     with open(from_path, "r", encoding="utf-8") as f:
         markdown = f.read()
@@ -32,22 +32,22 @@ def generate_page(from_path, template_path, dest_path):
             template = f.read() 
     title = extract_title(markdown)
     html_string = markdown_to_html_node(markdown).to_html()
-    template = template.replace("{{ Title }}", title).replace("{{ Content }}", html_string)
+    template = template.replace("{{ Title }}", title).replace("{{ Content }}", html_string).replace('href="/', f'href="{basepath}').replace('src="/', f'src="{basepath}')
     dest_path_dir = os.path.dirname(dest_path)
     os.makedirs(dest_path_dir, exist_ok=True)
     with open(dest_path, "w") as file:
         file.write(template)
 
-def generate_page_recursive(dir_path_content, template_path, dest_dir_path):
+def generate_page_recursive(basepath, dir_path_content, template_path, dest_dir_path):
     contents = os.listdir(dir_path_content)
     for content in contents:
         content_path = os.path.join(dir_path_content, content)
         if os.path.isdir(content_path):
-            generate_page_recursive(content_path, template_path, os.path.join(dest_dir_path, content))
+            generate_page_recursive(basepath ,content_path, template_path, os.path.join(dest_dir_path, content))
         elif os.path.isfile(content_path):
             filename, file_extension = os.path.splitext(content)
             if file_extension == ".md":
-                generate_page(content_path, template_path, os.path.join(dest_dir_path, filename + ".html"))            
+                generate_page(basepath, content_path, template_path, os.path.join(dest_dir_path, filename + ".html"))            
 
 
 
