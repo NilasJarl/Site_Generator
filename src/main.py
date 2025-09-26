@@ -13,7 +13,7 @@ def main(basepath):
 
 if __name__ == "__main__":
     basepath = "/"
-    if sys.argv:
-        basepath = sys.argv
+    if sys.argv[1]:
+        basepath = sys.argv[1]
     
     main(basepath)
