@@ -1,9 +1,15 @@
-from textnode import *
-from enum import Enum
+import os, shutil
+from generate_page import static_to_public, generate_page_recursive
+
+
+
+ 
+
+
 
 def main():
-    test_node = TextNode("This is some anchor text", TextType.LINK)
-    print(test_node)
+    static_to_public("static", "public")
+    generate_page_recursive("content", "template.html", "public")
 
-
-main()
+if __name__ == "__main__":
+    main()
